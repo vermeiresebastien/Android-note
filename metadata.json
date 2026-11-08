@@ -1,0 +1,6 @@
+{
+  "name": "Pocket Session",
+  "description": "Pocket-sized musical sketchpad and clip workstation inspired by Ableton Note with real audio synthesis, drum sequencing, MIDI piano roll, and Ableton Live export.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

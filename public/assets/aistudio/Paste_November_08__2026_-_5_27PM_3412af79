@@ -1,0 +1,1863 @@
+# MASTER BUILD SPECIFICATION — NATIVE ANDROID MUSIC SKETCHPAD
+
+## 0. YOUR MISSION
+
+You are a senior Android engineer, digital audio software architect, DSP developer, UX designer, and QA engineer.
+
+Build a complete, genuinely functional, native Android music-production application inspired by the workflow, simplicity, and creative immediacy of Ableton Note.
+
+This is an implementation request, not a request for a proposal, mockup, architecture-only document, or prototype consisting of simulated functionality.
+
+**Build the actual application, including its interface, working audio playback, sequencing, MIDI editing, sample handling, project management, and export system.**
+
+The application must feel like a polished pocket-sized music workstation rather than a generic beatmaker.
+
+Working name: **POCKET SESSION**
+
+Use this original name, iconography, and branding. Do not imply official affiliation with Ableton.
+
+The intended user already works with Ableton Live 12 on Windows and wants to sketch musical ideas on Android, then transfer those ideas into editable Ableton Live projects with as much instrument, MIDI, sample, tempo, and scene information preserved as technically possible.
+
+### Critical priorities
+
+In descending order:
+
+1. Real, reliable, audible music creation.
+2. Musical timing accuracy and synchronization.
+3. Extremely close workflow parity with Ableton Note.
+4. Excellent touch-based UX and visual polish.
+5. Project persistence and crash recovery.
+6. Editable transfer into Ableton Live.
+7. Preset management and instrument interchange.
+8. Audio quality and CPU efficiency.
+9. Advanced features and convenience improvements.
+
+Do not optimize visual appearance at the expense of functional correctness.
+
+Do not claim a feature works unless it has been implemented and verified.
+
+---
+
+# 1. EXECUTION INSTRUCTIONS
+
+You are working inside Google AI Studio's native Android application builder.
+
+Generate a real Kotlin and Jetpack Compose Android application.
+
+Do not build a React website, WebView app, HTML interface, or browser-based music sequencer.
+
+Use the available Android build environment, Gradle dependencies, emulator, and native Android framework APIs.
+
+Use Kotlin.
+
+Use Jetpack Compose for the interface.
+
+Use a single Android Activity, with appropriate separation of data, application, UI, sequencer, and audio layers.
+
+Do not depend on native C/C++ or NDK features inside Google AI Studio.
+
+Build the most reliable audio engine possible with available Android/Kotlin APIs. Create an abstraction allowing the engine to be replaced by an Oboe/AAudio native implementation later in Android Studio.
+
+### Autonomous execution policy
+
+Make reasonable engineering decisions without repeatedly asking questions.
+
+Implement the application directly.
+
+Create all required files, classes, resources, and configuration.
+
+Install compatible dependencies.
+
+Compile the project.
+
+Resolve compilation errors.
+
+Run available tests.
+
+Inspect the running application.
+
+Repair discovered bugs.
+
+Repeat until the generated application is as complete and stable as possible.
+
+Do not stop after generating architecture, a landing page, or a static Session View.
+
+If the environment imposes a hard limitation, implement the best functional alternative, document the limitation accurately, and preserve an extension point for future development.
+
+Do not replace unfinished features with decorative buttons, fake waveforms, prerecorded demonstrations masquerading as a sequencer, or inert controls.
+
+Do not silently omit requested functionality.
+
+---
+
+# 2. REFERENCE APPLICATION AND FEATURE FIDELITY
+
+Use Ableton Note as the primary functional and interaction reference.
+
+Official references:
+
+https://www.ableton.com/en/note/
+
+https://www.ableton.com/en/note/manual/
+
+https://help.ableton.com/hc/en-us/articles/6240279343772-Note-FAQ
+
+Study these references when browsing is available.
+
+Replicate the interaction principles and feature relationships as closely as possible using an independently implemented application.
+
+Specifically preserve:
+
+- A project library for musical sketches.
+- Clip-based Session View.
+- Eight independent instrument tracks.
+- Eight scene rows.
+- Up to sixteen bars per clip.
+- Instrument-focused touch performance.
+- Immediate musical capture.
+- MIDI recording and editing.
+- Instrument browsing and preset selection.
+- Sampling from the microphone.
+- Scene launching.
+- Track mixing.
+- Per-track sound controls.
+- Quantization.
+- Global musical tempo.
+- Global key and scale.
+- Groove controls.
+- Project export and transfer.
+
+Do not copy proprietary graphics, icons, sample libraries, branded artwork, binaries, instrument code, or protected application assets.
+
+Do not represent the application as an official Ableton product.
+
+Visual similarity should come from layout, ergonomics, hierarchy, spacing, motion, and interaction behavior, rather than copying protected assets.
+
+---
+
+# 3. PRODUCT EXPERIENCE
+
+The application should open directly to a beautifully designed library of projects.
+
+Opening a project immediately displays its Session View.
+
+Selecting a track or clip opens an Instrument View where the user can play sounds and record notes.
+
+Opening a recorded clip allows the user to edit its notes in a piano-roll editor.
+
+Every interaction must feel musical, immediate, and responsive.
+
+The application should encourage the user to experiment without interruption.
+
+Avoid unnecessary confirmations, menus, dialog boxes, or workflows that require several taps for common operations.
+
+Use sensible defaults.
+
+Preserve undo and redo.
+
+Maintain state when switching views.
+
+### Design language
+
+Dark, minimal, highly legible.
+
+Background: near-black charcoal.
+
+Panels: subtly differentiated dark gray.
+
+Typography: clean, modern sans-serif.
+
+Controls: large touch targets.
+
+Selected state: bright but restrained accents.
+
+Waveforms: high contrast.
+
+Grid lines: understated.
+
+Animations: fast, smooth, purposeful.
+
+No excessive gradients.
+
+No glossy skeuomorphism.
+
+No decorative visual noise.
+
+Use subtle borders and restrained shadows.
+
+The interface should be optimized first for portrait phones, but adapt correctly to landscape and larger tablets.
+
+Use edge-to-edge layouts and respect system insets.
+
+Use a consistent design token system for spacing, typography, colors, touch targets, and component states.
+
+### Navigation
+
+Use four main contexts:
+
+1. Project Library
+2. Session View
+3. Instrument View
+4. MIDI Editor
+
+Access settings, sample browser, mixer, and export functions contextually.
+
+Avoid persistent bottom navigation that unnecessarily reduces the musical workspace.
+
+Use intuitive gestures and explicit visible affordances.
+
+---
+
+# 4. PROJECT LIBRARY
+
+Implement a fully functioning project library.
+
+Each project card displays:
+
+- Name.
+- Last modified date.
+- BPM.
+- Time signature.
+- Track count.
+- Musical key, when configured.
+- A compact preview of its scene/track structure.
+- Optional user-defined color.
+
+Functions:
+
+- New project.
+- Open project.
+- Rename project.
+- Duplicate project.
+- Delete project with confirmation.
+- Sort by modification date.
+- Search by name.
+- Import previously exported projects.
+- Export or share projects.
+- Recover autosaved projects.
+- Restore the last active project.
+
+Create an example project containing real playable musical content made with original or appropriately licensed sounds.
+
+Example content is allowed only as a tutorial/demo; a new blank project must genuinely be empty.
+
+Project data must persist after the app is closed, killed, or the device is restarted.
+
+Autosave should be transactional and must not corrupt the project when interrupted.
+
+Keep recoverable backups when practical.
+
+Never discard unsaved musical work without warning or recovery.
+
+---
+
+# 5. SESSION VIEW
+
+Create a proper musical clip-launching environment.
+
+## Track model
+
+Support eight tracks per project.
+
+Each track has:
+
+- Unique stable identifier.
+- User-editable name.
+- Instrument assignment.
+- Instrument preset reference.
+- Track color.
+- Volume.
+- Pan.
+- Mute.
+- Solo.
+- Optional effects.
+- Eight clip slots.
+- Track-level performance state.
+
+Tracks must be independently playable.
+
+Multiple tracks can sound simultaneously.
+
+Track selection must be clearly indicated.
+
+Track settings must remain consistent when switching views.
+
+## Scene model
+
+Support eight scenes.
+
+Each scene has one clip slot per track.
+
+Each scene can be launched globally.
+
+Launching a scene schedules its contained clips according to musical quantization.
+
+Empty clip slots must have deliberate, predictable semantics.
+
+Define whether an empty slot stops a playing clip on its track or leaves the current clip running. Make this behavior consistent and visible, with a configurable preference if practical.
+
+## Clip model
+
+Each clip includes:
+
+- Stable identifier.
+- Parent track.
+- Parent scene.
+- Name.
+- Color.
+- Musical length.
+- Note events.
+- Loop boundaries.
+- Quantization settings.
+- Playback state.
+- Revision metadata.
+
+Support clip lengths:
+
+1 bar, 2 bars, 4 bars, 8 bars, and 16 bars.
+
+Clips loop seamlessly.
+
+Users can create, duplicate, move, clear, and delete clips.
+
+Long-press context menus should expose secondary operations.
+
+Avoid accidental destructive actions.
+
+The Session View must clearly distinguish:
+
+- Empty clips.
+- Clips containing notes.
+- Queued clips.
+- Playing clips.
+- Recording clips.
+- Selected clips.
+
+Show musical playback progress.
+
+Allow launching one clip without launching the entire scene.
+
+Support stop-track and stop-all operations.
+
+### Transport
+
+Provide:
+
+- Play.
+- Stop.
+- BPM display and adjustment.
+- Metronome.
+- Global quantization.
+- Current bar/beat position.
+- Recording/capture state.
+
+Tempo must be shared by all tracks and clips.
+
+Tempo changes must not desynchronize currently playing MIDI loops.
+
+Musical positioning must use a shared timing reference.
+
+Do not implement each track using independent timers.
+
+---
+
+# 6. INSTRUMENT VIEW
+
+Selecting a track opens a playable instrument workspace.
+
+Provide a compact preset header, playable pads, current clip preview, performance controls, and sound parameters.
+
+The pad layout must support:
+
+- Drum performance.
+- Melodic performance.
+- Scale-constrained performance.
+
+### Drum pads
+
+Default to sixteen pads arranged in a 4×4 matrix.
+
+Every pad has:
+
+- Note or sample assignment.
+- Label.
+- Selected/active state.
+- Velocity sensitivity where supported.
+- Playback feedback.
+
+Pads must actually trigger sound.
+
+Pad press and release handling must be correct.
+
+Repeated quick presses must retrigger correctly.
+
+Simultaneous finger presses must produce simultaneous sounds.
+
+### Melodic pads
+
+Provide a scale-oriented melodic grid.
+
+Support octave navigation.
+
+Support musical root note and scale selection.
+
+Support chromatic mode.
+
+Users should be able to play chords using multitouch.
+
+Support note-off events, sustained notes, and repeated notes.
+
+Optionally support touch-position-dependent velocity or expression where reliable.
+
+### Performance interaction
+
+The user should be able to:
+
+- Audition sounds.
+- Play freely.
+- Capture performances.
+- Quantize notes.
+- Switch presets.
+- Adjust instrument parameters.
+- Open the MIDI editor.
+- Undo changes.
+
+Switching away from this view must not stop the entire project.
+
+Instrument state must persist.
+
+---
+
+# 7. AUDIO ENGINE — NONNEGOTIABLE
+
+Build a real-time-capable audio subsystem.
+
+The application cannot be considered successful if it only creates MIDI objects without producing audible sound.
+
+### Architecture
+
+Define an AudioEngine interface abstracting:
+
+- Initialization.
+- Start.
+- Stop.
+- Pause.
+- Sample rate.
+- Buffer configuration.
+- Note on.
+- Note off.
+- Sample triggering.
+- Track gain.
+- Track pan.
+- Voice allocation.
+- Audio rendering.
+- Effects processing.
+- Offline rendering.
+- Device routing and lifecycle.
+
+Use an Android-compatible implementation for this initial build.
+
+Prefer a continuously running audio rendering architecture over creating individual Android media-player instances for every note.
+
+Use AudioTrack or another justified Android audio approach that supports multiple synthesized/sample voices mixed into one output stream.
+
+Evaluate Android's low-latency audio capabilities and request appropriate usage/performance settings where available.
+
+Use AudioManager for audio-device and focus management.
+
+Do not claim guaranteed low latency across all Android devices.
+
+### Timing
+
+Maintain one master musical clock.
+
+Use high-resolution monotonic timing.
+
+Do not use Compose animations, UI frame timing, or Handler delays as the authoritative musical clock.
+
+Schedule events ahead of playback.
+
+Convert musical ticks into sample-frame positions.
+
+Maintain precise loop boundaries.
+
+Support accurate note-on and note-off scheduling.
+
+Avoid drift across repeated loops.
+
+Define a clear transport state machine.
+
+### Timebase
+
+Use integer musical ticks with a documented PPQ resolution, preferably 960 ticks per quarter note.
+
+Use sample-frame positions for actual rendering.
+
+Define conversions between:
+
+- BPM.
+- Beats.
+- Bars.
+- Ticks.
+- Seconds.
+- Sample frames.
+
+Ensure floating-point rounding does not accumulate across long playback sessions.
+
+### Voice engine
+
+Support polyphonic playback.
+
+Implement voice allocation and release.
+
+Add configurable or sensible polyphony limits.
+
+Avoid stuck notes.
+
+Implement an all-notes-off command.
+
+Handle retriggering and overlapping notes.
+
+### Mixing
+
+Mix active voices into each track.
+
+Apply track gain and pan.
+
+Sum tracks into the master bus.
+
+Provide headroom.
+
+Apply a simple master peak limiter to prevent severe digital clipping.
+
+Avoid hard clipping and audible distortion under normal use.
+
+Provide meter values derived from actual audio, not fabricated animation.
+
+### Stability
+
+Audio rendering must not depend on UI recomposition.
+
+Do not allocate large objects inside the audio-rendering hot path.
+
+Do not perform file I/O inside time-critical rendering loops.
+
+Do not make network calls in the audio subsystem.
+
+Do not block audio processing while updating the library, editing notes, or switching views.
+
+Avoid clicks when transport stops, notes end, or parameters change.
+
+Use fades or smoothing where appropriate.
+
+Handle audio focus loss, interruptions, sample-rate changes, and device disconnection.
+
+Keep sound functioning with the screen locked when the user explicitly enables background playback.
+
+Use an appropriate foreground service and media notification where Android requires it.
+
+Do not consume microphone input unless recording is explicitly requested.
+
+---
+
+# 8. BUILT-IN INSTRUMENTS
+
+Implement genuinely playable instruments using independently developed or permissively licensed technology.
+
+Do not pretend to bundle actual Ableton instrument binaries.
+
+Prioritize useful sounds and musical expressiveness.
+
+### Drum engine
+
+Create a functional drum rack.
+
+Support sixteen sample slots.
+
+For each slot:
+
+- Sample selection.
+- Gain.
+- Pitch.
+- Start point.
+- End point.
+- One-shot playback.
+- Retrigger behavior.
+- Basic amplitude envelope.
+- Optional choke group.
+
+Include an original synthesized starter drum kit, or use sounds whose licenses clearly allow redistribution.
+
+Starter sounds:
+
+- Kick.
+- Snare.
+- Closed hi-hat.
+- Open hi-hat.
+- Clap.
+- Tom.
+- Rim.
+- Percussion.
+- Additional variations.
+
+Do not rely on external downloads for initial playback.
+
+### Melodic synthesizer
+
+Create an efficient polyphonic subtractive synthesizer.
+
+Include:
+
+- Sine waveform.
+- Triangle waveform.
+- Sawtooth waveform.
+- Square waveform.
+- Oscillator pitch.
+- Detuning.
+- ADSR amplitude envelope.
+- Low-pass filter.
+- Filter cutoff.
+- Resonance where stable.
+- Filter envelope where feasible.
+- Polyphony.
+- Voice stealing.
+
+Avoid clicks when envelopes change state.
+
+Avoid obviously broken or unstable DSP.
+
+Implement oscillator and filter techniques suitable for acceptable audio quality.
+
+Where sophisticated anti-aliasing is not feasible inside this environment, document that limitation.
+
+### Starter presets
+
+Create useful original presets:
+
+- Warm Pad.
+- Soft Keys.
+- Deep Bass.
+- Pluck.
+- Analog Lead.
+- Ambient Texture.
+- Simple Bell.
+- Sub Bass.
+- Basic Poly Synth.
+
+Store presets as structured parameter definitions, not hardcoded UI-only labels.
+
+Presets must audibly differ.
+
+### Sampler instrument
+
+Support importing WAV and other formats that Android can reliably decode.
+
+Provide:
+
+- Sample browsing.
+- Playback.
+- Pitch shifting by playback-rate variation.
+- Root note.
+- Start/end trim.
+- Looping.
+- Volume envelope.
+- Sample preview.
+- Basic waveform display.
+
+Explicitly disclose that changing sample playback rate affects pitch and duration unless a real time-stretching algorithm is implemented.
+
+Do not advertise warp/time-stretch capabilities without implementing them.
+
+---
+
+# 9. SAMPLE RECORDING AND IMPORT
+
+Implement microphone sample recording.
+
+Request microphone permission only when needed.
+
+Record a short sample into application storage.
+
+Display recording duration and level.
+
+Provide:
+
+- Record.
+- Stop.
+- Preview.
+- Rename.
+- Trim.
+- Normalize, when safely implemented.
+- Assign to drum pad.
+- Assign to sampler instrument.
+
+Use a reliable recording format, ideally PCM WAV.
+
+Provide a clear recording state and prevent accidental overwrites.
+
+Import audio through Android's Storage Access Framework.
+
+Support multi-file import if practical.
+
+Handle unsupported formats gracefully.
+
+Store imported audio in a reliable project-managed location, or retain permissions correctly.
+
+Projects must not break simply because the original user-selected file is moved.
+
+Export packages should include required audio dependencies.
+
+---
+
+# 10. PERFORMANCE CAPTURE
+
+A central feature of the app must be the ability to play first and decide to record afterward.
+
+Implement a genuine retrospective MIDI capture system.
+
+### Expected behavior
+
+While the user plays an instrument, keep a bounded in-memory history of note-on and note-off events with timestamps.
+
+When Capture is pressed:
+
+1. Identify the relevant musical performance window.
+2. Determine a reasonable clip start.
+3. Map recorded events to the musical clock.
+4. Preserve note pitches, velocities, and durations.
+5. Create or update a MIDI clip.
+6. Offer quantization if appropriate.
+7. Begin looping the captured material.
+
+Do not interpret random UI taps as MIDI notes.
+
+Retrospective capture must work for drum and melodic instruments.
+
+Handle performances beginning before global transport starts.
+
+Provide a meaningful tempo-estimation option for unaccompanied performances if feasible.
+
+Do not falsely claim tempo detection is working based on a static placeholder value.
+
+### Fixed-length recording
+
+Support predetermined clip lengths:
+
+1, 2, 4, 8, and 16 bars.
+
+When recording into a clip:
+
+- Align recording with the musical timeline.
+- Record pitch and timing.
+- Preserve velocity.
+- Loop when the selected length is reached.
+- Support overdubbing.
+- Avoid duplicate stuck notes.
+- Allow undo of the last recording pass.
+
+Include a clear indication of recording versus playback.
+
+---
+
+# 11. MIDI PIANO-ROLL EDITOR
+
+Implement an actual editable MIDI grid.
+
+This is not merely a visualization.
+
+### Display
+
+Horizontal axis: musical time.
+
+Vertical axis: MIDI pitch.
+
+Render notes as rectangles.
+
+Display bar lines, beat lines, and subdivisions.
+
+Support vertical pitch scrolling.
+
+Support horizontal time scrolling.
+
+Support horizontal zoom.
+
+Support practical minimum touch targets.
+
+Avoid excessive drawing or recomposition.
+
+### Editing
+
+Allow users to:
+
+- Insert notes.
+- Select notes.
+- Move notes in time.
+- Change pitch.
+- Resize note duration.
+- Delete notes.
+- Duplicate notes.
+- Quantize selected notes.
+- Change velocity.
+- Undo/redo changes.
+
+Add a drawing/editing mode if needed to prevent gesture conflicts.
+
+Notes must snap according to the selected grid unless snapping is disabled.
+
+Support useful grid resolutions:
+
+- 1/4.
+- 1/8.
+- 1/16.
+- 1/32.
+- Triplet variants where feasible.
+
+Support a velocity editor below the note grid.
+
+Show a playhead synchronized to actual transport time.
+
+Editing a clip while playing must not corrupt the scheduler.
+
+Schedule immutable or versioned note-event snapshots where necessary.
+
+The next playback cycle must reflect edits predictably.
+
+Provide note audition while editing.
+
+Make the MIDI editor usable on a phone screen without requiring microscopic gestures.
+
+---
+
+# 12. MUSICAL SETTINGS
+
+Implement a project-wide tempo.
+
+Suggested default: 120 BPM.
+
+Allow direct numeric editing.
+
+Allow tap tempo.
+
+Support a reasonable range such as 20–300 BPM, provided the scheduler is stable.
+
+Implement time signature support, initially prioritizing 4/4.
+
+Store time signature explicitly even if advanced signatures are not yet supported.
+
+### Global key and scale
+
+Allow selecting:
+
+- Root note.
+- Major.
+- Natural minor.
+- Pentatonic major.
+- Pentatonic minor.
+- Chromatic.
+
+Add other scales only if correctly implemented.
+
+Scale selection must affect melodic pad note mappings.
+
+It must not silently rewrite existing MIDI notes unless the user explicitly requests it.
+
+### Quantization
+
+Provide global launch quantization and separate MIDI note quantization.
+
+Launch quantization options:
+
+- None.
+- Beat.
+- Bar.
+
+MIDI quantization options:
+
+- Off.
+- 1/4.
+- 1/8.
+- 1/16.
+- 1/32.
+
+Use an appropriate musical tick representation.
+
+### Groove
+
+Implement a controllable swing/groove amount.
+
+Apply groove as a timing transformation to scheduled MIDI events.
+
+Do not destructively move original MIDI notes unless requested.
+
+Ensure groove is consistent across tracks.
+
+---
+
+# 13. CLIP AND SCENE PLAYBACK RULES
+
+Define the behavior unambiguously.
+
+One active clip per track in Session View.
+
+Different tracks can play different clips simultaneously.
+
+Launching another clip in the same track replaces the current clip at the chosen quantization boundary.
+
+Launching a scene schedules its contained clips simultaneously.
+
+Stop actions follow global quantization where appropriate, with an immediate stop-all option.
+
+All clips derive timing from the same project transport.
+
+Clip loops must continue seamlessly.
+
+Clips with different lengths must coexist correctly.
+
+Example:
+
+- Track 1 loops every 1 bar.
+- Track 2 loops every 4 bars.
+- Track 3 loops every 8 bars.
+
+All three must stay synchronized indefinitely without accumulating drift.
+
+Playback must continue while:
+
+- Browsing instruments.
+- Opening the MIDI editor.
+- Switching tracks.
+- Changing parameters.
+- Viewing project settings.
+
+Avoid resetting the transport on navigation.
+
+---
+
+# 14. MIXER
+
+Create a compact mixer accessible from Session View.
+
+For each track:
+
+- Name.
+- Color.
+- Gain fader.
+- Pan.
+- Mute.
+- Solo.
+- Audio meter.
+
+For the master:
+
+- Master gain.
+- Master level meter.
+- Peak indicator.
+- Optional limiter enable/disable if implemented.
+
+Use real signal measurements for meters.
+
+Implement sensible gain smoothing to prevent zipper noise.
+
+Maintain track parameters between sessions.
+
+Support solo interactions consistently.
+
+If multiple tracks are soloed, define whether they all remain audible; use standard additive solo behavior.
+
+Mute should never delete MIDI events or modify the underlying clip.
+
+---
+
+# 15. EFFECTS
+
+Create a small, reliable effects architecture.
+
+Prioritize:
+
+1. Delay.
+2. Reverb.
+3. Filter.
+4. Basic master limiter.
+
+At minimum, implement a useful delay with:
+
+- Dry/wet.
+- Feedback.
+- Time.
+- Tempo-sync option.
+
+For reverb, use an efficient implementation that is stable on mobile, if feasible.
+
+If the effects engine cannot be implemented completely, ensure the core audio engine remains functional and effects that do not work are not exposed as usable.
+
+Do not route the audio through mock effects controls.
+
+Parameter changes must be audible.
+
+Avoid unstable feedback and digital clipping.
+
+Store all effect parameters in the project.
+
+Design the processing chain so additional effects can be added later.
+
+---
+
+# 16. PROJECT DATA MODEL
+
+Create a versioned, structured project format independent of the UI.
+
+Suggested top-level structure:
+
+Project:
+- id
+- schemaVersion
+- appVersion
+- name
+- createdAt
+- modifiedAt
+- tempoBpm
+- timeSignature
+- musicalKey
+- scale
+- grooveAmount
+- launchQuantization
+- tracks
+- scenes
+- samples
+- assetManifest
+- exportMetadata
+
+Track:
+- id
+- name
+- color
+- volumeDb
+- pan
+- mute
+- solo
+- instrument
+- effects
+- clipSlots
+
+Instrument:
+- engineType
+- presetId
+- presetVersion
+- parameters
+- sampleReferences
+- liveCompatibilityMetadata
+
+Clip:
+- id
+- name
+- lengthTicks
+- loopStartTicks
+- loopEndTicks
+- notes
+- createdAt
+- modifiedAt
+
+NoteEvent:
+- id
+- pitch
+- velocity
+- startTick
+- durationTicks
+- channel
+- probability (optional; default 100%)
+
+SampleAsset:
+- id
+- projectRelativePath
+- originalFilename
+- hash
+- sampleRate
+- channelCount
+- frameCount
+- encoding
+
+Use stable IDs rather than relying exclusively on array indices.
+
+Use explicit schema versions.
+
+Separate musical data from UI state.
+
+Implement data migration hooks.
+
+Validate project input before loading.
+
+Use atomic saves and safe temporary-file replacement.
+
+Avoid destructive migrations.
+
+Define a portable project package, for example:
+
+`project-name.pocketbundle`
+
+This must be a ZIP-based format containing:
+
+- project.json
+- samples/
+- presets/
+- manifest.json
+
+The application should be able to import its own exported packages.
+
+Use deterministic, documented schema conventions where practical.
+
+---
+
+# 17. ABLETON LIVE 12 INTEROPERABILITY — TOP PRIORITY
+
+The long-term goal is to create projects on Android and open them in Ableton Live 12 on Windows with as much structure and editability preserved as possible.
+
+This is not merely exporting a stereo WAV file.
+
+Define three compatibility levels.
+
+### LEVEL A — REQUIRED: STANDARD MIDI + AUDIO
+
+Implement a reliable export system that produces:
+
+- Standard MIDI files.
+- Per-track MIDI data.
+- Tempo information.
+- Time signature information.
+- Imported sample assets.
+- Instrument preset manifest.
+- Project JSON metadata.
+- Scene and clip mapping.
+- Optional audio stems.
+- Optional stereo mixdown.
+
+Standard MIDI export must be genuinely valid and readable by Ableton Live.
+
+Prefer MIDI Type 1 for multitrack export.
+
+Use a documented PPQ resolution.
+
+Ensure proper note-on and note-off pairing.
+
+Preserve clip start positions.
+
+Preserve relative note durations.
+
+Implement a deterministic flattening rule when converting scenes into a linear arrangement.
+
+Do not lose samples.
+
+### LEVEL B — DESIRED: AUTOMATED LIVE RECONSTRUCTION
+
+Build a structured interoperability layer for reconstructing the project in Live.
+
+Use a format such as:
+
+`live-transfer.json`
+
+Include:
+
+- Track order.
+- Track names.
+- Clip positions.
+- Clip lengths.
+- Scenes.
+- Tempo.
+- MIDI notes.
+- Samples.
+- Instrument type references.
+- Preset IDs.
+- Device parameters where known.
+- Audio asset paths.
+- Compatibility confidence.
+
+Document how a desktop companion could use this to reconstruct the session.
+
+Generate this file now, even if the desktop companion is outside the Android builder's capabilities.
+
+Where possible, create the source for a minimal Windows desktop companion as a separate reference deliverable, not as part of the Android APK.
+
+The companion's eventual responsibilities:
+
+1. Read the exported project bundle.
+2. Validate musical and sample assets.
+3. Create or populate a Live project using a verified, lawful, supported mechanism.
+4. Assign instrument presets.
+5. Reconstruct MIDI clips and track organization.
+6. Report any settings that could not be recreated.
+7. Allow the user to open the result in Ableton Live 12.
+
+Do not claim Ableton Live exposes a general public automation API if that has not been established.
+
+Do not fabricate an SDK or undocumented integration capability.
+
+If direct Live project writing cannot be implemented safely or reliably, keep the companion as a documented extension point and ship the working MIDI/audio export.
+
+### LEVEL C — RESEARCH ONLY: NATIVE LIVE SET EXPORT
+
+Investigate the documented Ableton Live Set Export library:
+
+https://ableton.github.io/export/
+
+Determine whether it is accessible, properly licensed, and usable with the current development environment.
+
+Do not assume the library supports Android.
+
+Do not assume it supports embedding arbitrary Ableton instruments.
+
+Do not claim direct `.als` generation unless a real file is produced and successfully opened in Ableton Live.
+
+Do not claim `.ablbundle` compatibility unless tested using authentic, valid reference projects.
+
+Never generate fake `.als` or `.ablbundle` files by renaming ZIP files.
+
+### Instrument mapping
+
+Create a dedicated mapping layer:
+
+AndroidInstrumentDescriptor
+→ LiveInstrumentDescriptor
+→ LivePresetReference
+
+The purpose is to distinguish Android playback sound from eventual Ableton instrument reconstruction.
+
+For example:
+
+Android: Synth / Warm Pad
+Live target: Drift / chosen compatible preset
+Mapping status: Approximation, unverified until reconstructed
+
+Actual Ableton preset identifiers must come from legitimate, available preset metadata or explicit user mapping.
+
+Do not invent native preset IDs.
+
+Support user-defined mappings.
+
+Record which mappings are:
+
+- Exact and verified.
+- Approximate.
+- Unavailable.
+
+A missing mapping must not prevent MIDI export.
+
+### Preserving native instruments
+
+If the user has legally obtained Ableton Live presets, provide a future-compatible mechanism for importing their identifiers and metadata.
+
+Do not extract or distribute Ableton's proprietary instrument engines.
+
+Do not claim identical sound rendering without the actual instrument engine.
+
+The Android substitute instrument can provide immediate musical feedback, while the Live export reconstructs the corresponding native device when a legitimate supported method becomes available.
+
+This separation is fundamental to the architecture.
+
+---
+
+# 18. AUDIO EXPORT
+
+Implement actual offline or reliable real-time audio rendering.
+
+Support:
+
+- Full project mixdown to WAV.
+- Scene-sequence export.
+- Per-track stems, if supported by the engine.
+
+Preferred uncompressed export:
+
+48 kHz WAV, 16-bit or 24-bit PCM.
+
+If the Android audio engine internally operates at another sample rate, perform proper resampling or export at the actual supported sample rate and disclose it.
+
+Do not just write a WAV header around incompatible data.
+
+Do not record silence and claim successful export.
+
+Scene-sequence export should render scenes in scene order.
+
+Define duration using the longest active clip in each scene, with sensible handling of clip lengths and loop repetition.
+
+Include effects tails when relevant.
+
+Export processing must not destroy project state.
+
+Allow sharing through Android's system share sheet.
+
+---
+
+# 19. UNDO / REDO
+
+Implement a meaningful undo/redo system for destructive musical edits.
+
+Cover:
+
+- Note insertion.
+- Note deletion.
+- Note movement.
+- Note resizing.
+- Clip creation.
+- Clip deletion.
+- Clip duplication.
+- Parameter edits where practical.
+- Recording passes.
+
+Use a command pattern or equivalent structured history.
+
+Do not store massive unbounded full-project snapshots.
+
+Define maximum history or memory limits.
+
+Undo must restore a valid project state.
+
+Redo must reproduce the previously undone operation.
+
+Avoid stale references when switching clips or tracks.
+
+---
+
+# 20. APPLICATION ARCHITECTURE
+
+Use clear separation of concerns, even within the single-module Android Studio project.
+
+Suggested package structure:
+
+- app/
+- core/model/
+- core/music/
+- core/audio/
+- core/scheduler/
+- core/synthesis/
+- core/sampler/
+- core/persistence/
+- core/export/
+- core/midi/
+- core/interop/
+- feature/library/
+- feature/session/
+- feature/instrument/
+- feature/editor/
+- feature/mixer/
+- feature/settings/
+- feature/samples/
+- ui/components/
+- ui/theme/
+- tests/
+
+Use a unidirectional state-flow architecture.
+
+Prefer ViewModels with StateFlow.
+
+Use Kotlin coroutines for non-real-time tasks.
+
+Never use coroutines or UI observers as the timing authority for individual audio samples.
+
+Define interfaces for major subsystems.
+
+Avoid giant files containing the entire application.
+
+Avoid business logic inside Compose UI elements.
+
+Use immutable state snapshots or carefully controlled mutation boundaries.
+
+Provide dependency injection through a lightweight composition root or suitable supported mechanism.
+
+Do not introduce heavyweight frameworks unnecessarily.
+
+### Required subsystem interfaces
+
+- ProjectRepository
+- ProjectSerializer
+- AudioEngine
+- InstrumentEngine
+- MusicalClock
+- EventScheduler
+- MidiRecorder
+- CaptureBuffer
+- ClipLauncher
+- MidiFileExporter
+- AudioExporter
+- SampleRepository
+- LiveTransferExporter
+- PresetRepository
+
+These interfaces must be implemented or clearly identified as future integration boundaries.
+
+Do not create a large set of unused interfaces merely to appear architecturally sophisticated.
+
+---
+
+# 21. STATE MANAGEMENT AND DATA INTEGRITY
+
+Musical state is authoritative.
+
+The UI reflects musical state; the UI must not independently invent playback state.
+
+Maintain:
+
+- Current project.
+- Selected track.
+- Selected scene.
+- Selected clip.
+- Transport state.
+- Active clip per track.
+- Pending launch events.
+- Current note performance state.
+- Audio device state.
+- Save state.
+- Recording state.
+
+Keep selection state separate from playback state.
+
+A clip may be selected without being launched.
+
+A playing clip may remain active when another clip is opened for editing.
+
+Avoid race conditions when:
+
+- Switching projects.
+- Deleting active clips.
+- Changing tempo.
+- Switching presets.
+- Stopping playback.
+- Starting recording.
+- Opening exported files.
+- Returning from background.
+
+All operations must leave the project in a valid state.
+
+---
+
+# 22. ANDROID PLATFORM REQUIREMENTS
+
+Use modern Android APIs with appropriate backward compatibility.
+
+Configure:
+
+- Microphone permission.
+- Audio focus.
+- Foreground playback service where applicable.
+- File import/export.
+- System share sheet.
+- Audio device changes.
+- Lifecycle restoration.
+- Screen orientation support.
+- Keyboard support where relevant.
+- Touch and multitouch event handling.
+
+Avoid unnecessary permissions.
+
+Do not request access to all device files.
+
+Use Android's Storage Access Framework for user-selected content.
+
+Do not store user projects in temporary cache directories.
+
+Handle headphones being connected or disconnected.
+
+Avoid unexpectedly playing audio through speakers after headphone disconnection; pause or otherwise handle the transition predictably.
+
+Provide a settings page with:
+
+- Audio output information.
+- Estimated or configured buffer size, where available.
+- Sample rate information.
+- Audio latency calibration, if implemented.
+- Metronome volume.
+- Default project BPM.
+- Background playback preference.
+- Autosave information.
+- Export preferences.
+- About/version information.
+
+Do not claim arbitrary multichannel professional audio routing unless actually supported and tested.
+
+---
+
+# 23. PERFORMANCE EXPECTATIONS
+
+Optimize for practical modern Android phones.
+
+Target:
+
+- Responsive pad interaction.
+- Smooth clip navigation.
+- Stable four-to-eight-track playback.
+- Predictable transport timing.
+- Smooth scrolling in the piano roll.
+- No major glitches when changing views.
+- No uncontrolled memory growth.
+- No unnecessary background CPU work.
+
+Prefer lightweight rendering.
+
+Cache static waveform data.
+
+Cache MIDI note drawing data when appropriate.
+
+Avoid recalculating complete project structures during every frame.
+
+Keep audio processing off the main UI thread.
+
+Use bounded buffers and sensible maximum sample sizes.
+
+Report real device-dependent latency rather than claiming a universal value.
+
+Ensure stable playback under moderate CPU load.
+
+---
+
+# 24. ACCESSIBILITY AND USABILITY
+
+Support sensible font scaling without destroying the musical layout.
+
+Maintain minimum comfortable touch targets.
+
+Use clear contrast.
+
+Provide content descriptions for important controls.
+
+Do not rely exclusively on color to communicate playing, recording, or muted states.
+
+Provide an obvious Stop All button.
+
+Support clear visual recording feedback.
+
+Use haptic feedback judiciously.
+
+Avoid unintended clicks during drag gestures.
+
+Support scrolling without accidentally launching clips.
+
+---
+
+# 25. TESTING REQUIREMENTS
+
+This section is mandatory.
+
+Implement automated tests for the music-domain logic.
+
+### Unit tests
+
+Test:
+
+1. Tick-to-time conversion.
+2. Time-to-tick conversion.
+3. BPM conversions.
+4. Note duration.
+5. Loop wrapping.
+6. Clip launch quantization.
+7. Mixed clip lengths.
+8. Project serialization.
+9. Project deserialization.
+10. Scene-launch scheduling.
+11. Note quantization.
+12. Groove transformations.
+13. Undo/redo.
+14. MIDI export structure.
+15. MIDI note-on/off consistency.
+16. Instrument mapping metadata.
+17. Safe sample asset path handling.
+
+### Integration tests
+
+Test:
+
+1. Create project.
+2. Add drum track.
+3. Add melodic track.
+4. Create clip.
+5. Record notes.
+6. Launch clip.
+7. Launch scene.
+8. Stop transport.
+9. Save project.
+10. Close and reopen project.
+11. Import sample.
+12. Edit MIDI notes.
+13. Export MIDI.
+14. Export WAV.
+15. Import application project bundle.
+
+### Audio tests
+
+Where feasible:
+
+- Generate a test note.
+- Render non-silent PCM.
+- Verify samples remain within acceptable amplitude limits.
+- Verify note-off behavior.
+- Verify looping does not introduce unexplained discontinuities.
+- Verify simultaneous voices mix correctly.
+- Verify sample-rate assumptions.
+
+### UI tests
+
+Check:
+
+- Project library navigation.
+- Session grid interactions.
+- Instrument pad interactions.
+- Piano-roll editing.
+- Mixer controls.
+- Settings.
+- Save/export dialogs.
+
+### Manual verification checklist
+
+After building the application, verify:
+
+- App launches.
+- New project can be created.
+- A drum pad produces audible sound.
+- A synth pad produces audible sound.
+- Multiple notes can play simultaneously.
+- A clip can be recorded.
+- A recorded clip loops.
+- Two different tracks can play together.
+- Scene launching works.
+- MIDI editor edits actual notes.
+- Playback continues during navigation.
+- Project survives app restart.
+- WAV export contains audible music.
+- MIDI export contains the correct notes.
+- Share/export works.
+- No primary button is inert.
+
+If emulator audio behavior is unreliable, clearly distinguish emulator limitations from actual tested functionality and provide physical-device test instructions.
+
+Never mark a test PASS merely because its code exists.
+
+---
+
+# 26. DEFINITION OF DONE
+
+The application is acceptable only when the following fundamental user journey works:
+
+1. Launch the Android application.
+2. Create a new project.
+3. Set the tempo to 125 BPM.
+4. Open a drum track.
+5. Choose a kick/snare/hat kit.
+6. Play drum pads and hear the sounds.
+7. Record a four-bar drum clip.
+8. Open the MIDI editor.
+9. Adjust the position of a snare hit.
+10. Return to Session View.
+11. Add a melodic track.
+12. Choose a bass synthesizer preset.
+13. Play a bassline.
+14. Record a four-bar MIDI clip.
+15. Launch both clips simultaneously.
+16. Change track volumes.
+17. Duplicate the scene.
+18. Modify the copied bass clip.
+19. Play the resulting scene sequence.
+20. Save the project.
+21. Close and reopen the application.
+22. Confirm the project remains intact.
+23. Export a playable audio file.
+24. Export valid MIDI.
+25. Export the structured Live-transfer bundle.
+26. Verify that export contains the relevant samples, instrument metadata, and scene information.
+
+No item in this sequence may be simulated.
+
+---
+
+# 27. IMPLEMENTATION ORDER
+
+Internally implement in the following dependency order:
+
+PHASE 1
+- Data models.
+- Project repository.
+- App theme.
+- Project library.
+- Navigation.
+
+PHASE 2
+- Audio engine.
+- Synthesizer.
+- Drum samples.
+- Master clock.
+- MIDI event scheduling.
+- Working playable pads.
+
+PHASE 3
+- Session View.
+- Clip model.
+- Clip launching.
+- Scene launching.
+- Multi-track playback.
+
+PHASE 4
+- Recording.
+- Retrospective capture.
+- Clip duplication.
+- MIDI editor.
+- Quantization.
+- Undo/redo.
+
+PHASE 5
+- Sampler.
+- Microphone recording.
+- Sample import.
+- Mixer.
+- Instrument parameters.
+- Effects.
+
+PHASE 6
+- Project bundles.
+- MIDI export.
+- Audio export.
+- Live-transfer metadata.
+- Import support.
+
+PHASE 7
+- UI polish.
+- Performance optimization.
+- Integration testing.
+- Bug fixing.
+- Documentation.
+
+**Important: these are internal implementation phases, not separate user prompts.**
+
+Proceed through as many as the environment permits in this single build request.
+
+Prioritize completing a genuinely playable vertical slice over superficial implementation of every feature.
+
+Do not ask the user to manually initiate each phase.
+
+Do not claim all phases are finished if they are not.
+
+---
+
+# 28. FAILURE PREVENTION RULES
+
+Avoid these common AI-generated app problems:
+
+- Beautiful interface with no actual audio engine.
+- Pads that change color but produce no sound.
+- Fake audio meters.
+- Clips that visually move but contain no MIDI events.
+- Recording that does not preserve note timings.
+- Project data stored only in memory.
+- Saving that silently loses sample references.
+- WAV export that generates silence.
+- Invalid MIDI files.
+- Export buttons that create empty files.
+- Independent timers for different tracks.
+- Loop timing drift.
+- Audio processing on the UI thread.
+- Excessive Compose recompositions.
+- Blocking file operations during playback.
+- Unnecessary dependencies.
+- Hardcoded sample filenames that do not exist.
+- Placeholder functions advertised as complete.
+- Fake Ableton instrument compatibility.
+- Incorrect project-file extensions.
+- Excessive architecture with no working implementation.
+- Unverified build-success claims.
+
+If a sophisticated feature cannot be completed reliably, provide a simpler functional implementation rather than a fake advanced feature.
+
+---
+
+# 29. DELIVERABLES
+
+Produce:
+
+1. Complete Android application source code.
+2. Functional Android build.
+3. Installable APK through AI Studio where supported.
+4. Gradle project compatible with Android Studio.
+5. Working bundled starter instruments or generated sounds.
+6. Local project persistence.
+7. Native project import/export.
+8. Standard MIDI export.
+9. Audio export.
+10. Live-transfer metadata export.
+11. Automated tests.
+12. README explaining architecture and use.
+13. Feature verification report.
+14. Known limitations report.
+15. Exact instructions for continuing development outside AI Studio.
+
+Within the README, include:
+
+- How the audio engine works.
+- How sequencing and timing work.
+- Where instrument presets are stored.
+- How project files are structured.
+- How samples are managed.
+- How MIDI exports are generated.
+- What Ableton Live compatibility is genuinely supported.
+- What is required for future native `.als` or `.ablbundle` support.
+- How to replace the audio engine with Oboe/AAudio later.
+
+---
+
+# 30. FINAL SELF-REVIEW
+
+Before concluding, perform a critical review.
+
+Ask:
+
+- Is it actually possible to make music with this application?
+- Is it a working audio product rather than a UI concept?
+- Are clip launches musically synchronized?
+- Do the pads produce audible sound?
+- Can the user capture a performance?
+- Can the user edit the recorded MIDI?
+- Can the user save and reopen projects?
+- Does exported MIDI actually contain musical notes?
+- Does audio export render the real project?
+- Are Ableton interoperability claims accurate?
+- Are any visible controls nonfunctional?
+- Are there likely crashes or state synchronization bugs?
+- Does it genuinely resemble Ableton Note's creative workflow?
+
+Correct problems that can be fixed.
+
+Run a final build.
+
+Report the result using:
+
+**IMPLEMENTED AND VERIFIED**
+Features actually tested and functioning.
+
+**IMPLEMENTED BUT NOT VERIFIED**
+Features with complete code that could not be tested.
+
+**PARTIALLY IMPLEMENTED**
+Features with known gaps.
+
+**NOT IMPLEMENTED**
+Features that could not be delivered.
+
+**KNOWN LIMITATIONS**
+Real technical restrictions, including any limitations of the Google AI Studio environment.
+
+**NEXT DEVELOPMENT PRIORITIES**
+The smallest set of work required to reach a reliable production-quality application.
+
+Never invent successful test outcomes.
+
+---
+
+# 31. FINAL INSTRUCTION
+
+Start building the actual application now.
+
+Do not respond with only a development plan.
+
+Do not generate merely a static UI demonstration.
+
+Do not stop at a nonfunctional scaffold.
+
+Generate the application, execute the available build and test workflow, repair issues, and produce the most complete functional result possible within this environment.
+
+Above all, the app must immediately reward the user with the ability to create, hear, edit, save, and export real music.
+
+The ultimate objective is an independently implemented Android music sketchpad that feels as close to Ableton Note as practical and provides a credible path to editable Ableton Live 12 integration.
